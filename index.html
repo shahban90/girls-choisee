@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Girls Choice | Online Store</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  font-family:Arial,sans-serif;
+  background:#fff7fb;
+  color:#333;
+}
+
+/* HEADER */
+
+header{
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:rgba(255,255,255,.95);
+  backdrop-filter:blur(12px);
+  box-shadow:0 3px 20px rgba(0,0,0,.08);
+}
+
+.nav{
+  max-width:1150px;
+  margin:auto;
+  padding:15px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.logo{
+  font-size:26px;
+  font-weight:bold;
+  color:#d63384;
+}
+
+.nav-buttons{
+  display:flex;
+  gap:8px;
+}
+
+.nav-buttons a{
+  text-decoration:none;
+  color:#d63384;
+  font-weight:bold;
+  padding:9px 13px;
+  border-radius:20px;
+}
+
+.nav-buttons a:hover{
+  background:#ffe1ef;
+}
+
+/* HERO */
+
+.hero{
+  min-height:480px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:70px 20px;
+  background:
+    radial-gradient(circle at top left,#ffd6e8,transparent 40%),
+    radial-gradient(circle at bottom right,#f6d7ff,transparent 40%);
+}
+
+.hero-content{
+  max-width:800px;
+  animation:fadeUp 1s ease;
+}
+
+.hero h1{
+  font-size:55px;
+  color:#d63384;
+  margin-bottom:15px;
+}
+
+.hero h2{
+  font-size:25px;
+  margin-bottom:15px;
+}
+
+.hero p{
+  font-size:17px;
+  color:#666;
+  line-height:1.7;
+}
+
+.shop-btn{
+  display:inline-block;
+  margin-top:25px;
+  padding:15px 28px;
+  background:#d63384;
+  color:white;
+  text-decoration:none;
+  border-radius:30px;
+  font-weight:bold;
+  box-shadow:0 8px 25px rgba(214,51,132,.25);
+  transition:.3s;
+}
+
+.shop-btn:hover{
+  transform:translateY(-3px);
+}
+
+/* PRODUCTS */
+
+.products-section{
+  max-width:1150px;
+  margin:auto;
+  padding:55px 20px;
+}
+
+.section-title{
+  text-align:center;
+  margin-bottom:30px;
+}
+
+.section-title h2{
+  font-size:35px;
+  color:#d63384;
+}
+
+.section-title p{
+  color:#777;
+  margin-top:8px;
+}
+
+/* SEARCH */
+
+.search-box{
+  max-width:600px;
+  margin:0 auto 35px;
+}
+
+.search-box input{
+  width:100%;
+  padding:16px 20px;
+  border:1px solid #ddd;
+  border-radius:30px;
+  outline:none;
+  font-size:16px;
+  box-shadow:0 5px 20px rgba(0,0,0,.05);
+}
+
+.search-box input:focus{
+  border-color:#d63384;
+}
+
+/* PRODUCTS GRID */
+
+.products{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:22px;
+}
+
+.product{
+  background:white;
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 7px 25px rgba(0,0,0,.08);
+  transition:.35s;
+  animation:fadeUp .6s ease;
+}
+
+.product:hover{
+  transform:translateY(-7px);
+  box-shadow:0 15px 35px rgba(214,51,132,.15);
+}
+
+.product-image{
+  width:100%;
+  height:250px;
+  object-fit:cover;
+  display:block;
+}
+
+.product-body{
+  padding:18px;
+}
+
+.product-name{
+  font-size:18px;
+  font-weight:bold;
+  color:#d63384;
+}
+
+.product-price{
+  margin-top:7px;
+  font-size:17px;
+  font-weight:bold;
+}
+
+.product-description{
+  margin-top:8px;
+  color:#777;
+  line-height:1.5;
+  font-size:14px;
+}
+
+.order-btn{
+  display:block;
+  text-align:center;
+  margin-top:15px;
+  padding:11px;
+  background:#25D366;
+  color:white;
+  text-decoration:none;
+  border-radius:12px;
+  font-weight:bold;
+}
+
+.empty{
+  grid-column:1/-1;
+  text-align:center;
+  padding:50px;
+  color:#777;
+}
+
+/* ABOUT */
+
+.about{
+  padding:65px 20px;
+  background:white;
+}
+
+.about-inner{
+  max-width:900px;
+  margin:auto;
+  text-align:center;
+}
+
+.about h2{
+  color:#d63384;
+  font-size:35px;
+  margin-bottom:15px;
+}
+
+.about p{
+  color:#666;
+  line-height:1.8;
+}
+
+/* CONTACT */
+
+.contact{
+  padding:55px 20px;
+  text-align:center;
+}
+
+.contact h2{
+  color:#d63384;
+  font-size:32px;
+  margin-bottom:15px;
+}
+
+.contact p{
+  color:#666;
+  margin-bottom:20px;
+}
+
+.whatsapp{
+  display:inline-block;
+  background:#25D366;
+  color:white;
+  padding:14px 25px;
+  border-radius:30px;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+/* FOOTER */
+
+footer{
+  background:#d63384;
+  color:white;
+  text-align:center;
+  padding:25px 15px;
+}
+
+footer a{
+  color:white;
+}
+
+/* ANIMATION */
+
+@keyframes fadeUp{
+  from{
+    opacity:0;
+    transform:translateY(25px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+  .products{
+    grid-template-columns:repeat(3,1fr);
+  }
+
+}
+
+@media(max-width:650px){
+
+  .hero h1{
+    font-size:40px;
+  }
+
+  .hero h2{
+    font-size:21px;
+  }
+
+  .products{
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+  }
+
+  .product-image{
+    height:210px;
+  }
+
+  .product-body{
+    padding:13px;
+  }
+
+  .product-name{
+    font-size:16px;
+  }
+
+  .product-price{
+    font-size:15px;
+  }
+
+  .nav{
+    padding:12px;
+  }
+
+  .logo{
+    font-size:21px;
+  }
+
+  .nav-buttons a{
+    padding:7px;
+    font-size:13px;
+  }
+
+}
+
+@media(max-width:380px){
+
+  .products{
+    grid-template-columns:1fr;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<header>
+
+  <div class="nav">
+
+    <div class="logo">
+      🌸 Girls Choice
+    </div>
+
+    <div class="nav-buttons">
+      <a href="#products">Shop</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </div>
+
+  </div>
+
+</header>
+
+
+<!-- HERO -->
+
+<section class="hero">
+
+  <div class="hero-content">
+
+    <h1>Girls Choice 🌸</h1>
+
+    <h2>Beautiful Things For Beautiful Girls</h2>
+
+    <p>
+      Discover our latest collection of beautiful,
+      stylish and lovely products.
+    </p>
+
+    <a
+      class="shop-btn"
+      href="#products">
+      🛍️ Explore Products
+    </a>
+
+  </div>
+
+</section>
+
+
+<!-- PRODUCTS -->
+
+<section
+  class="products-section"
+  id="products">
+
+  <div class="section-title">
+
+    <h2>Our Collection</h2>
+
+    <p>
+      Latest products available now
+    </p>
+
+  </div>
+
+
+  <div class="search-box">
+
+    <input
+      id="search"
+      type="search"
+      placeholder="🔍 Search products..."
+      oninput="searchProducts()"
+    >
+
+  </div>
+
+
+  <div
+    id="productsGrid"
+    class="products">
+
+    <div class="empty">
+      ⏳ Products loading...
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ABOUT -->
+
+<section
+  class="about"
+  id="about">
+
+  <div class="about-inner">
+
+    <h2>About Girls Choice</h2>
+
+    <p>
+      Welcome to Girls Choice 🌸
+      <br><br>
+      We bring you beautiful and stylish
+      products selected especially for girls.
+      Explore our collection and order your
+      favourite products through WhatsApp.
+    </p>
+
+  </div>
+
+</section>
+
+
+<!-- CONTACT -->
+
+<section
+  class="contact"
+  id="contact">
+
+  <h2>Contact Us 💕</h2>
+
+  <p>
+    For orders and questions, contact us on WhatsApp.
+  </p>
+
+  <a
+    class="whatsapp"
+    href="https://wa.me/923703690659"
+    target="_blank">
+    💬 WhatsApp Owner
+  </a>
+
+</section>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+  <p>
+    © 2026 Girls Choice. All Rights Reserved.
+  </p>
+
+  <p style="margin-top:8px">
+
+    <a
+      href="https://wa.me/c/923706903659"
+      target="_blank">
+      🛍️ View WhatsApp Shop
+    </a>
+
+  </p>
+
+</footer>
+
+
+<script>
+
+/* ==============================
+   SUPABASE
+============================== */
+
+const SUPABASE_URL =
+"https://aysmwuhqkupbtklxhhyr.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_Gi51au7ypxBIoBMnLlBImw_cLundJmp";
+
+const supabaseClient =
+supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+
+/* ALL PRODUCTS */
+
+let allProducts = [];
+
+
+/* ==============================
+   LOAD PRODUCTS
+============================== */
+
+async function loadProducts(){
+
+  const grid =
+    document.getElementById(
+      "productsGrid"
+    );
+
+
+  grid.innerHTML =
+    '<div class="empty">⏳ Products loading...</div>';
+
+
+  const {
+    data,
+    error
+  } =
+  await supabaseClient
+    .from("products")
+    .select("*")
+    .order(
+      "created_at",
+      {
+        ascending:false
+      }
+    );
+
+
+  if(error){
+
+    grid.innerHTML =
+      '<div class="empty">❌ Products load nahi ho rahe.</div>';
+
+    console.error(error);
+
+    return;
+  }
+
+
+  allProducts =
+    data || [];
+
+
+  displayProducts(
+    allProducts
+  );
+
+}
+
+
+/* ==============================
+   DISPLAY PRODUCTS
+============================== */
+
+function displayProducts(products){
+
+  const grid =
+    document.getElementById(
+      "productsGrid"
+    );
+
+
+  if(
+    !products ||
+    products.length === 0
+  ){
+
+    grid.innerHTML =
+      '<div class="empty">🌸 Abhi products available nahi hain.</div>';
+
+    return;
+  }
+
+
+  grid.innerHTML = "";
+
+
+  products.forEach(
+    product => {
+
+      const card =
+        document.createElement(
+          "div"
+        );
+
+
+      card.className =
+        "product";
+
+
+      const orderText =
+        encodeURIComponent(
+          "Assalam o Alaikum, mujhe " +
+          product.name +
+          " order karna hai."
+        );
+
+
+      card.innerHTML = `
+
+        <img
+          class="product-image"
+          src="${escapeHtml(product.image_url || "")}"
+          alt="${escapeHtml(product.name)}"
+          loading="lazy"
+        >
+
+        <div class="product-body">
+
+          <div class="product-name">
+            ${escapeHtml(product.name)}
+          </div>
+
+          <div class="product-price">
+            ${escapeHtml(product.price || "")}
+          </div>
+
+          <div class="product-description">
+            ${escapeHtml(product.description || "")}
+          </div>
+
+          <a
+            class="order-btn"
+            href="https://wa.me/923703690659?text=${orderText}"
+            target="_blank">
+            💬 Order on WhatsApp
+          </a>
+
+        </div>
+
+      `;
+
+
+      grid.appendChild(card);
+
+    }
+  );
+
+}
+
+
+/* ==============================
+   SEARCH
+============================== */
+
+function searchProducts(){
+
+  const search =
+    document
+      .getElementById("search")
+      .value
+      .toLowerCase()
+      .trim();
+
+
+  if(!search){
+
+    displayProducts(
+      allProducts
+    );
+
+    return;
+  }
+
+
+  const filtered =
+    allProducts.filter(
+      product =>
+
+        (product.name || "")
+          .toLowerCase()
+          .includes(search)
+
+        ||
+
+        (product.description || "")
+          .toLowerCase()
+          .includes(search)
+
+        ||
+
+        (product.price || "")
+          .toLowerCase()
+          .includes(search)
+    );
+
+
+  displayProducts(
+    filtered
+  );
+
+}
+
+
+/* ==============================
+   HTML SECURITY
+============================== */
+
+function escapeHtml(value){
+
+  return String(value)
+
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+
+}
+
+
+/* START */
+
+loadProducts();
+
+</script>
+
+</body>
+</html>
